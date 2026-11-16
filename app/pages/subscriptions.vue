@@ -1,3 +1,6 @@
 <template>
-    <div></div>
+    <div id="subscriptions">
+        <Pricing />
+        <FeatureComparison />
+    </div>
 </template>

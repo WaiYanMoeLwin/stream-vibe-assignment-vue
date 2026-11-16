@@ -51,7 +51,7 @@ header.main-header {
     }
 }
 
-#plans {
+#pricing {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -223,7 +223,7 @@ header.main-header {
     .active-plan {
         margin: 0 4rem 6rem;
     }
-    #plans {
+    #pricing {
         padding: 0 4rem;
         margin-bottom: 10rem;
 
@@ -303,7 +303,7 @@ header.main-header {
             }
         }
     }
-    #plans {
+    #pricing {
         padding: 0 2rem;
         margin-bottom: 8rem;
 
@@ -383,7 +383,7 @@ header.main-header {
             grid-template-columns: 1fr 1fr;
         }
     }
-    #plans {
+    #pricing {
         padding: 0 1.6rem;
         .pricing-cards {
             .pricing-card {

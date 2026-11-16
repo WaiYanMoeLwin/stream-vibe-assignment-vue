@@ -35,19 +35,7 @@ export interface PricingPlan {
     description: string;
     price: Record<string, number>; // Keyed by billing cycle ID
     freeTrialDays: number;
-    features: {
-        content: string;
-        devices: string;
-        maxDevices: number;
-        maxResolution: string;
-        freeTrial: string;
-        cancelAnytime: string;
-        hdr: string;
-        dolbyAtmos: string;
-        adFree: string;
-        offlineViewing: string;
-        familySharing: string;
-    };
+    features: Record<string, string | number>;
 }
 
 export interface BillingCycle {

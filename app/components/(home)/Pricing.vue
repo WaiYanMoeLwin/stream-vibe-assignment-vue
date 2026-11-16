@@ -4,7 +4,8 @@
             <article>
                 <h2 class="section-title">Choose the plan that's right for you</h2>
                 <p class="section-description">
-                    {{ description }}
+                    Join StreamVibe and select from our flexible subscription options tailored to suit your viewing
+                    preferences. Get ready for non-stop entertainment!
                 </p>
             </article>
             <div class="billing-cycles-selector">
@@ -27,7 +28,7 @@
                     <span class="plan-price-suffix">/ {{ selectedBillingCycle!.label }}</span>
                 </div>
                 <div class="pricing-card-buttons-container">
-                    <button class="start-free-trial-button" @click="navigateTo({ path: '/checkout', query: { plan: plan.id, billingCycle: selectedBillingCycle!.id, freeTrial: true } })">Start Free Trial</button>
+                    <button class="start-free-trial-button" @click="navigateTo({ path: '/checkout', query: { plan: plan.id, billingCycle: selectedBillingCycle!.id, freeTrial: 'true' } })">Start Free Trial</button>
                     <button class="choose-plan-button" @click="navigateTo({ path: '/checkout', query: { plan: plan.id, billingCycle: selectedBillingCycle!.id } })">Choose Plan</button>
                 </div>
             </div>
@@ -38,6 +39,6 @@
 <script setup lang="ts">
     import usePricingPlansStore from '@/stores/pricing-plans';
     const pricingPlansStore = usePricingPlansStore();
-    const { plans, billingCycles, currency, description } = storeToRefs(pricingPlansStore);
+    const { plans, billingCycles, currency } = storeToRefs(pricingPlansStore);
     const selectedBillingCycle = ref(billingCycles.value[0]);
 </script>
