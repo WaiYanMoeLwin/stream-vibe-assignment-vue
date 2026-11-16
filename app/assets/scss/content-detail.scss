@@ -1,4 +1,5 @@
 @use "base";
+#content-detail {
 #thumbnail {
     display: flex;
     flex-direction: column;
@@ -690,4 +691,5 @@
             }
         }
     }
+}
 }

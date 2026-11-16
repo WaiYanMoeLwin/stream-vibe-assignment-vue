@@ -1,4 +1,5 @@
 @use 'base';
+#checkout {
 .checkout-section {
     display: flex;
     flex-direction: column;
@@ -158,4 +159,5 @@
             }
         }
     }
+}
 }

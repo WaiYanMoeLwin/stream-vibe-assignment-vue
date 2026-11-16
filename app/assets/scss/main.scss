@@ -1,5 +1,6 @@
 @use "base";
 
+#main {
 header.main-header {
     position: fixed;
 }
@@ -749,4 +750,5 @@ header.main-header {
             }
         }
     }
+}
 }

@@ -129,7 +129,7 @@ nav {
         @include reset-list;
         gap: 1.4rem;
     }
-    a.router-link-active {
+    a.active {
         color: $white;
         padding: 1.2rem 2rem;
         background-color: $black-10;

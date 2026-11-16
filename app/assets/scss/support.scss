@@ -1,4 +1,5 @@
 @use "base";
+#support{
 header.main-header {
     margin-bottom: 10rem;
 }
@@ -461,4 +462,5 @@ header.main-header {
         }
     }
 
+}
 }

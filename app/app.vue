@@ -23,4 +23,8 @@ pricingPlansStore.loadPricingPlans();
 
 <style lang="scss">
 @use './assets/scss/main.scss';
+@use './assets/scss/support.scss';
+@use './assets/scss/checkout.scss';
+@use './assets/scss/content-detail.scss';
+@use './assets/scss/subscriptions.scss';
 </style>

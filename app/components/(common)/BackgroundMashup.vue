@@ -1,6 +1,8 @@
 <template>
     <div class="background-mashup">
-        <img v-for="image in backgroundImages" :key="image" :src="image" alt="Background">
+        <div v-for="image in backgroundImages" :key="image" class="background-mashup-image">
+            <img :src="image" alt="Background">
+        </div>
         <slot />
     </div>
 </template>

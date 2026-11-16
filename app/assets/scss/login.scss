@@ -1,5 +1,5 @@
 @use 'base';
-
+#login {
 .tab {
     display: grid;
     width: 58rem;
@@ -126,4 +126,5 @@ section {
             }
         }
     }
+}
 }
