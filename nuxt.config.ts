@@ -14,5 +14,11 @@ export default defineNuxtConfig({
       tablet: 768,
       mobile: 320
     }
-  }
+  },
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false
+    }
+  ]
 })

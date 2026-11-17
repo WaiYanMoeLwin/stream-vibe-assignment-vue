@@ -129,7 +129,7 @@ nav {
         @include reset-list;
         gap: 1.4rem;
     }
-    a.active {
+    a.active, a.router-link-active, a.router-link-exact-active {
         color: $white;
         padding: 1.2rem 2rem;
         background-color: $black-10;
@@ -239,10 +239,10 @@ nav.main-nav {
         gap: 1.6rem;
         padding: 2rem 3rem;
     }
-    ul:has(:first-child > a.active) {
+    ul:has(:first-child > a.active, :first-child > a.router-link-active, :first-child > a.router-link-exact-active) {
         padding: 2rem 3rem 2rem 1rem;
     }
-    ul:has(:last-child > a.active) {
+    ul:has(:last-child > a.active, :last-child > a.router-link-active, :last-child > a.router-link-exact-active) {
         padding: 2rem 1rem 2rem 3rem;
     }
 }
@@ -634,7 +634,7 @@ footer {
         ul {
             gap: 1.2rem;
         }
-        a.active {
+        a.active, a.router-link-active, a.router-link-exact-active {
             padding: 1rem 1.6rem;
         }
         a:hover {
@@ -645,10 +645,10 @@ footer {
         ul {
             padding: 1.6rem 2rem;
         }
-        ul:has(:first-child > a.active) {
+        ul:has(:first-child > a.active, :first-child > a.router-link-active, :first-child > a.router-link-exact-active) {
             padding: 1.6rem 2rem 1.6rem 1rem;
         }
-        ul:has(:last-child > a.active) {
+        ul:has(:last-child > a.active, :last-child > a.router-link-active, :last-child > a.router-link-exact-active) {
             padding: 1.6rem 1rem 1.6rem 2rem;
         }
     }

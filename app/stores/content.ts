@@ -13,6 +13,32 @@ const useContentStore = defineStore("content",{
         getContentById: (state) => {
             return (id: string) => state.content[id];
         },
+        getTrendingContent: (state) => {
+            return (type: 'movie' | 'series' | 'both') => {
+                const allContent = Object.values(state.content);
+                const filteredContent = type === 'both' ? allContent : allContent.filter(item => item.type === type);
+                return filteredContent.sort((a, b) => b.imdbVotes - a.imdbVotes).slice(0, 10);
+            }
+        },
+        getNewReleases: (state) => {
+            return (type: 'movie' | 'series' | 'both') => {
+                const allContent = Object.values(state.content);
+                const filteredContent = type === 'both' ? allContent : allContent.filter(item => item.type === type);
+                return filteredContent.sort((a, b) => new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime()).slice(0, 10);
+            }
+        },
+        getMustWatchContent: (state) => {
+            return (type: 'movie' | 'series' | 'both') => {
+                const allContent = Object.values(state.content);
+                const filteredContent = type === 'both' ? allContent : allContent.filter(item => item.type === type);
+                return filteredContent.sort((a, b) => b.imdbRating.localeCompare(a.imdbRating)).slice(0, 10);
+            }
+        },
+        trailers: (state) => {
+            const allContent = Object.values(state.content);
+            const shuffledContent = allContent.toSorted(() => Math.random() - 0.5);
+            return shuffledContent.slice(0, 5);
+        }
     },
     actions: {
         async loadContent() {
@@ -147,7 +173,7 @@ function toContentItem(fetchedData: any, mockData: any): ContentItem {
     }
 }
 
-interface ContentItem {
+export interface ContentItem {
     id: string;
     title: string;
     plot: string;
@@ -185,12 +211,12 @@ interface ContentItem {
     seasons?: Record<number, SeasonItem>;
 }
 
-interface SeasonItem {
+export interface SeasonItem {
     seasonNumber: number;
     episodes: Record<number, EpisodeItem>;
 }
 
-interface EpisodeItem {
+export interface EpisodeItem {
     episodeNumber: number;
     title: string;
     plot: string;
@@ -198,7 +224,7 @@ interface EpisodeItem {
     poster: string;
 }
 
-interface Genre {
+export interface Genre {
     name: string;
     movies: string[];
     series: string[];

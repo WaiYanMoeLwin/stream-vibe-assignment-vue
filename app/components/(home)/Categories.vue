@@ -16,6 +16,7 @@
                 v-for="genre in genresToDisplay"
                 :key="genre.name"
                 :genre="genre"
+                :shuffle-images="true"
             />
         </article>
         <ScrollBar
@@ -64,53 +65,6 @@
     });
 
     const categoriesElement = useTemplateRef<HTMLElement | null>('categoriesElement');
-    const visibleContentPercentage = ref(0);
-    const scrollPercentage = ref(0);
-
-    const measuereVisibleContentPercentage = () => {
-        if (categoriesElement.value) {
-            const totalWidth = categoriesElement.value.scrollWidth;
-            const visibleWidth = categoriesElement.value.clientWidth;
-            visibleContentPercentage.value = (visibleWidth / totalWidth) * 100;
-        }
-    };
-
-    const measureScrollPercentage = () => {
-        if (categoriesElement.value) {
-            const scrollLeft = categoriesElement.value.scrollLeft;
-            const totalWidth = categoriesElement.value.scrollWidth - categoriesElement.value.clientWidth;
-            scrollPercentage.value = Math.round((scrollLeft / totalWidth) * 100);
-        }
-    };
-
-    const handleScroll = (percentage: number) => {
-        console.log('Scroll percentage received from ScrollBar:', percentage);
-        if (categoriesElement.value) {
-            const totalWidth = categoriesElement.value.scrollWidth - categoriesElement.value.clientWidth;
-            categoriesElement.value.scrollLeft = (percentage / 100) * totalWidth;
-        }
-    };
-
-    let observer: ResizeObserver | null = null;
-    onMounted(() => {
-        const el = categoriesElement.value;
-        if (!el) return;
-        observer = new ResizeObserver(measuereVisibleContentPercentage);
-        observer.observe(el);
-        Array.from(el.children).forEach(child => observer?.observe(child as Element));
-        measuereVisibleContentPercentage();
-    });
-    onBeforeUnmount(() => observer?.disconnect());
-
-    watchEffect(() => {
-        if (categoriesElement.value) {
-            categoriesElement.value.addEventListener('scroll', measureScrollPercentage);
-        }
-        return () => {
-            if (categoriesElement.value) {
-                categoriesElement.value.removeEventListener('scroll', measureScrollPercentage);
-            }
-        };
-    });
+    const { visibleContentPercentage, scrollPercentage, handleScroll } = useScroll(categoriesElement);
 
 </script>

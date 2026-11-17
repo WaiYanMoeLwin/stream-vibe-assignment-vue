@@ -6,6 +6,7 @@
             </div>
             <div class="fade-out-bottom" />
         </div>
+        <span v-if="props.isPopular!" class="top-10-badge">Top 10 in</span>
         <div class="genre-title-container">
             <h3 class="genre-title">{{ props.genre.name }}</h3>
             <NuxtLink :to="`/movies-and-shows?genre=${props.genre.name}`" class="view-all-button">
@@ -25,11 +26,16 @@
         },
         isPopular?: boolean,
         type?: 'movie' | 'series' | 'both',
+        shuffleImages?: boolean,
     }>();
-
-    const { data: selectedContent } = await useAsyncData(`genre-${props.genre.name}`, async () => {
+    const key = `${props.type?.toLowerCase() || 'both'}-genre-${props.genre.name.toLocaleLowerCase()}-${props.isPopular ? 'popular' : 'all'}-${props.shuffleImages ? 'shuffled' : 'ordered'}`;
+    const { data: selectedContent } = await useAsyncData(key, async () => {
         const availableContent = props.type === 'movie' ? props.genre.movies : props.type === 'series' ? props.genre.series : [...props.genre.movies, ...props.genre.series];
+        if (!props.shuffleImages) {
+            return availableContent.slice(0, 4).map(id => useContentStore().content[id]);
+        }
         const shuffledContent = availableContent.toSorted(() => Math.random() - 0.5);
-        return shuffledContent.slice(0, 4).map(id => useContentStore().content[id]);
+        const selectedContent = shuffledContent.slice(0, 4).map(id => useContentStore().content[id]);
+        return selectedContent;
     });
 </script>

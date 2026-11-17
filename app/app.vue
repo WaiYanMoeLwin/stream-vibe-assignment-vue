@@ -15,16 +15,21 @@ const devicesStore = useDevicesStore();
 const faqsStore = useFAQsStore();
 const pricingPlansStore = usePricingPlansStore();
 
-contentStore.loadContent();
-devicesStore.loadDevices();
-faqsStore.loadFaqs();
-pricingPlansStore.loadPricingPlans();
+onBeforeMount(async () => {
+  await Promise.all([
+    contentStore.loadContent(),
+    devicesStore.loadDevices(),
+    faqsStore.loadFaqs(),
+    pricingPlansStore.loadPricingPlans()
+  ]);
+})
 </script>
 
 <style lang="scss">
 @use './assets/scss/main.scss';
 @use './assets/scss/support.scss';
-@use './assets/scss/checkout.scss';
-@use './assets/scss/content-detail.scss';
 @use './assets/scss/subscriptions.scss';
+@use './assets/scss/movies-and-shows.scss';
+@use './assets/scss/content-detail.scss';
+@use './assets/scss/checkout.scss';
 </style>
