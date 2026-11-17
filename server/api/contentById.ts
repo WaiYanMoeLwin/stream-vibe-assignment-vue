@@ -33,9 +33,10 @@ export default defineCachedEventHandler(async (event) => {
             contentDetails.Poster = '/images/general-placeholder.jpg'; // Set a default poster path
         }
     }
-
+    console.log('Final content details:', contentDetails.Title, contentDetails.Season);
     return contentDetails;
 }, {
+    name: 'omdb-series-cache',
     maxAge: 60 * 60 * 24 * 7, // Cache for 7 days
-    getKey: (event) => String(getQuery(event).id) // Use the id as the cache key
+    getKey: (event) => (String(getQuery(event).id) + String(getQuery(event).seasonNumber || ''))// Use the id as the cache key
 });

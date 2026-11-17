@@ -167,7 +167,7 @@ function toContentItem(fetchedData: any, mockData: any): ContentItem {
             name: r.name,
             rating: r.rating,
             country: r.country,
-            review: r.review
+            review: r.text
         })),
         totalSeasons: fetchedData.totalSeasons ? parseInt(fetchedData.totalSeasons) : undefined,
     }

@@ -31,6 +31,7 @@ export default defineCachedEventHandler(async (event) => {
 
     return contentDetails;
 }, {
+    name: 'omdb-content-cache',
     maxAge: 60 * 60 * 24 * 7, // Cache for 7 days
     getKey: (event) => String(getQuery(event).title) // Use the title as the cache key
 })

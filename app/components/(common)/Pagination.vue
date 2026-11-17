@@ -7,7 +7,7 @@
         >
             <img src="/images/icons/arrow-left.svg" alt="Previous">
         </button>
-        <div class="pages">
+        <div v-if="props.showPages !== false" class="pages">
             <button
                 v-for="page in props.totalPages"
                 :key="page"
@@ -27,10 +27,13 @@
 </template>
 
 <script setup lang="ts">
-    const props = defineProps<{
+    const props = withDefaults(defineProps<{
         totalPages: number;
         currentPage: number;
-    }>();
+        showPages?: boolean;
+    }>(), {
+        showPages: true
+    });
     const emits = defineEmits<{
         (e: 'page-change', page: number): void;
     }>();
