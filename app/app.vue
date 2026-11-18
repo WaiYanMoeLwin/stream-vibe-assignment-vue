@@ -2,6 +2,7 @@
   <NuxtAnnouncer />
   <NuxtLayout>
     <NuxtPage />
+    <MessageModal :message="modal.message" :is-open="modal.isOpen" @okay="modal.okay" @close="modal.cancel" />
   </NuxtLayout>
 </template>
 
@@ -14,6 +15,8 @@ const contentStore = useContentStore();
 const devicesStore = useDevicesStore();
 const faqsStore = useFAQsStore();
 const pricingPlansStore = usePricingPlansStore();
+
+const modal = getModal();
 
 onBeforeMount(async () => {
   await Promise.all([

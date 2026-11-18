@@ -755,7 +755,7 @@ footer {
                     a {
                         display: block;
                         width: 100%;
-                        &.active {
+                        &.active, &.router-link-active, &.router-link-exact-active {
                             padding: 1.2rem 0;
                         }
                         &:hover {
