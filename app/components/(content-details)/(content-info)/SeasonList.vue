@@ -24,7 +24,7 @@
                     <span class="episode-number">{{ episode.episodeNumber.toString().padStart(2, '0') }}</span>
                     <div class="episode-thumbnail">
                         <img :src="episode.poster" :alt="episode.title" :title="episode.title" class="thumbnail-img">
-                        <button class="play-button">
+                        <button class="play-button" aria-label="Play Episode" @click="handlePlayButtonClick(season.seasonNumber, episode.episodeNumber)">
                             <img class="play-icon" src="/images/icons/play-circle.svg" alt="Play">
                         </button>
                     </div>
@@ -45,6 +45,7 @@
 </template>
 
 <script setup lang="ts">
+    import useUserStore from '@/stores/user';
     const props = defineProps<{
         content: ContentItem;
     }>();
@@ -64,4 +65,22 @@
             expandedSeasons.value.push(seasonNumber);
         }
     };
+
+    const userStore = useUserStore();
+    const isLoggedIn = computed(() => !!userStore.loggedInUser);
+    const hasActivePlan = computed(() => userStore.hasActivePlan);
+    const openModal = useModal();
+    const handlePlayButtonClick = (seasonNumber: number, episodeNumber: number) => {
+        if (!isLoggedIn.value) {
+            openModal('You must be logged in to play content. Please log in or register to continue.',
+                () => navigateTo('/login')
+            );
+        } else if (!hasActivePlan.value) {
+            openModal('You must have an active subscription plan to play content. Please subscribe to continue.',
+                () => navigateTo('/subscriptions')
+            );
+        } else {
+            navigateTo(`/playback/${props.content.id}?season=${seasonNumber}&episode=${episodeNumber}`);
+        }
+    }
 </script>

@@ -5,7 +5,7 @@
             <p :class="props.isCarousel ? 'trailer-description' : 'description'">{{ contentItem!.plot }}</p>
         </article>
         <article class="media-buttons-container">
-            <button class="play-button"><img src="/images/icons/play.svg" alt="Play"> Play Now</button>
+            <button class="play-button" @click="handlePlayButtonClick"><img src="/images/icons/play.svg" alt="Play"> Play Now</button>
             <div class="watch-list-buttons">
                 <button class="add-to-watch-list-button" aria-label="Add to Watch List" @click="handleAddToWatchList">
                     <img v-if="!isInWatchlist" src="/images/icons/plus.svg" alt="Add to Watch List">
@@ -58,5 +58,19 @@ import useUserStore from '@/stores/user';
                 openModal(error.message);
             }
         }
-    }
+    };
+
+    const handlePlayButtonClick = () => {
+        if (!isLoggedIn.value) {
+            openModal('You must be logged in to play content. Please log in or register to continue.',
+                () => navigateTo('/login')
+            );
+        } else if (!userStore.hasActivePlan) {
+            openModal('You must have an active subscription plan to play content. Please subscribe to a plan to continue.',
+                () => navigateTo('/subscriptions')
+            );
+        } else {
+            navigateTo(`/playback/${props.contentId}`);
+        }
+    };
 </script>
