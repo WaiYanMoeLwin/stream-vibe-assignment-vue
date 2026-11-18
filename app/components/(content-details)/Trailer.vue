@@ -7,8 +7,9 @@
         <article class="media-buttons-container">
             <button class="play-button"><img src="/images/icons/play.svg" alt="Play"> Play Now</button>
             <div class="watch-list-buttons">
-                <button class="add-to-watch-list-button" aria-label="Add to Watch List">
-                    <img src="/images/icons/plus.svg" alt="Add to Watch List">
+                <button class="add-to-watch-list-button" aria-label="Add to Watch List" @click="handleAddToWatchList">
+                    <img v-if="!isInWatchlist" src="/images/icons/plus.svg" alt="Add to Watch List">
+                    <img v-else src="/images/icons/bookmark.svg" alt="Added to Watch List" class="in-watch-list">
                 </button>
                 <button class="like-button" aria-label="Like">
                     <img src="/images/icons/like.svg" alt="Like">
@@ -25,6 +26,7 @@
 
 <script setup lang="ts">
     import useContentStore from '@/stores/content';
+import useUserStore from '@/stores/user';
     const props = defineProps<{
         contentId: string;
         sectionId: string;
@@ -38,4 +40,23 @@
         'background-position': 'center',
         'background-clip': 'padding-box',
     }));
+
+    const userStore = useUserStore();
+    const isLoggedIn = computed(() => !!userStore.loggedInUser);
+    const isInWatchlist = computed(() => userStore.isInWatchlist(props.contentId));
+    const openModal = useModal();
+    const handleAddToWatchList = () => {
+        if (!isLoggedIn.value) {
+            openModal('You must be logged in to add items to your watch list. Please log in or register to continue.',
+                () => navigateTo('/login')
+            );
+        } else {
+            try {
+                userStore.addToWatchlist(props.contentId);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            } catch (error: any) {
+                openModal(error.message);
+            }
+        }
+    }
 </script>

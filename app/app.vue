@@ -35,5 +35,6 @@ onBeforeMount(async () => {
 @use './assets/styles/movies-and-shows.scss';
 @use './assets/styles/content-detail.scss';
 @use './assets/styles/login.scss';
+@use './assets/styles/watch-list.scss';
 @use './assets/styles/checkout.scss';
 </style>
