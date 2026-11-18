@@ -22,6 +22,12 @@ const useUserStore = defineStore('user', {
         },
         isInWatchlist: (state) => (contentId: string) => {
             return state.loggedInUser?.watchlist?.includes(contentId) || false;
+        },
+        hasActivePlan: (state) => {
+            return !!state.loggedInUser?.activePlan;
+        },
+        activePlan: (state) => {
+            return state.loggedInUser?.activePlan || null;
         }
     },
     actions: {
@@ -93,6 +99,28 @@ const useUserStore = defineStore('user', {
             if (userIndex !== -1) {
                 this.users[userIndex] = { ...this.loggedInUser };
             }
+        },
+        setActivePlan(plan: User['activePlan']) {
+            if (!this.loggedInUser) {
+                throw new Error('User not logged in');
+            }
+            this.loggedInUser.activePlan = plan;
+            // Update the user in the users array to reflect the change in active plan
+            const userIndex = this.users.findIndex(u => u.id === this.loggedInUser?.id);
+            if (userIndex !== -1) {
+                this.users[userIndex] = { ...this.loggedInUser };
+            }
+        },
+        cancelActivePlan() {
+            if (!this.loggedInUser) {
+                throw new Error('User not logged in');
+            }
+            this.loggedInUser.activePlan = undefined;
+            // Update the user in the users array to reflect the change in active plan
+            const userIndex = this.users.findIndex(u => u.id === this.loggedInUser?.id);
+            if (userIndex !== -1) {
+                this.users[userIndex] = { ...this.loggedInUser };
+            }
         }
     }
 });
@@ -104,6 +132,23 @@ export interface User {
     email: string;
     password: string;
     watchlist?: string[];
+    activePlan?: ActivePlan;
+}
+export interface ActivePlan {
+    id: string;
+    name: string;
+    shortName: string;
+    billingCycle: string;
+    price: number;
+    paymentInfo: PaymentInfo;
+    renewAt: string; // ISO date string
+    expiryDate: string; // ISO date string
+}
+
+export interface PaymentInfo {
+    cardNumber: string;
+    expirationDate: string;
+    cvv: string;
 }
 
 export default useUserStore;
