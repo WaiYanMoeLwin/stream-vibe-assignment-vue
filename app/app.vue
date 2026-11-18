@@ -26,10 +26,11 @@ onBeforeMount(async () => {
 </script>
 
 <style lang="scss">
-@use './assets/scss/main.scss';
-@use './assets/scss/support.scss';
-@use './assets/scss/subscriptions.scss';
-@use './assets/scss/movies-and-shows.scss';
-@use './assets/scss/content-detail.scss';
-@use './assets/scss/checkout.scss';
+@use './assets/styles/main.scss';
+@use './assets/styles/support.scss';
+@use './assets/styles/subscriptions.scss';
+@use './assets/styles/movies-and-shows.scss';
+@use './assets/styles/content-detail.scss';
+@use './assets/styles/login.scss';
+@use './assets/styles/checkout.scss';
 </style>
