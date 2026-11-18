@@ -4,6 +4,7 @@ const useContentStore = defineStore("content",{
     state: () => ({
         content: {} as Record<string, ContentItem>,
         genres: {} as Record<string, Genre>,
+        isLoading: false,
     }),
     persist: {
         key: 'content-store',
@@ -42,9 +43,11 @@ const useContentStore = defineStore("content",{
     },
     actions: {
         async loadContent() {
+            this.isLoading = true;
             if (this.content && Object.keys(this.content).length > 0) {
                 // Content is already loaded, no need to fetch again
                 console.log("Used cached content data at: ", new Date().toISOString());
+                this.isLoading = false;
                 return;
             }
             console.log("Loading content data at: ", new Date().toISOString());
@@ -91,7 +94,42 @@ const useContentStore = defineStore("content",{
                 }
             }
             this.genres = genres;
+            this.isLoading = false;
         },
+        async loadContentById(id: string) {
+            this.isLoading = true;
+            if (this.content[id]) {
+                // Content already exists, no need to fetch again
+                console.log(`Content with ID ${id} already exists in the store.`);
+                this.isLoading = false;
+                return;
+            }
+            console.log(`Loading content with ID ${id} at: `, new Date().toISOString());
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const data: any = await $fetch('http://localhost:3000/api/contentById?id=' + encodeURIComponent(id));
+            if (data) {
+                console.log(data);
+                const contentDetails = toContentItem(data, null);
+                this.content[contentDetails.id] = contentDetails;
+
+                // If the content is a series, fetch season details
+                if (contentDetails.type === 'series' && contentDetails.totalSeasons) {
+                    const seasonDetails = await fetchSeasonDetails(contentDetails);
+                    this.content[contentDetails.id]!.seasons = seasonDetails;
+                }
+                for (const genre of contentDetails.genre) {
+                    if (!this.genres[genre]) {
+                        this.genres[genre] = { name: genre, movies: [], series: [] };
+                    }
+                    if (contentDetails.type === 'movie') {
+                        this.genres[genre].movies.push(contentDetails.id);
+                    } else if (contentDetails.type === 'series') {
+                        this.genres[genre].series.push(contentDetails.id);
+                    }
+                }
+                this.isLoading = false;
+            }
+        }
     },
 });
 
@@ -132,7 +170,7 @@ async function fetchSeasonDetails(content: ContentItem): Promise<Record<number, 
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function toContentItem(fetchedData: any, mockData: any): ContentItem {
+export function toContentItem(fetchedData: any, mockData: any): ContentItem {
     return {
         id: fetchedData.imdbID,
         title: fetchedData.Title,
@@ -157,18 +195,18 @@ function toContentItem(fetchedData: any, mockData: any): ContentItem {
         imdbRating: fetchedData.imdbRating,
         imdbVotes: parseInt(fetchedData.imdbVotes.replace(/,/g, '')),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        music: mockData.music.map((m: any) => ({ // Mock data for music
+        music: mockData ? mockData.music.map((m: any) => ({ // Mock data for music
             name: m.name,
             country: m.country
-        })),
+        })) : undefined,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        reviews: mockData.reviews.map((r: any) => ({ // Mock data for reviews
+        reviews: mockData ? mockData.reviews.map((r: any) => ({ // Mock data for reviews
             id: r.id,
             name: r.name,
             rating: r.rating,
             country: r.country,
             review: r.text
-        })),
+        })) : [],
         totalSeasons: fetchedData.totalSeasons ? parseInt(fetchedData.totalSeasons) : undefined,
     }
 }

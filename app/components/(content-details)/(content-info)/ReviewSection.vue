@@ -8,6 +8,7 @@
             </button>
         </header>
         <div class="reviews-list">
+            <template v-if="props.content.reviews && props.content.reviews?.length > 0">
             <article v-for="review in reviewsToDisplay" :key="review.id" class="review-item">
                 <header class="review-header">
                     <div class="reviewer">
@@ -42,6 +43,8 @@
                 </header>
                 <p class="review-content">{{ review.review }}</p>
             </article>
+            </template>
+            <p v-else class="no-reviews-message">No reviews available</p>
         </div>
         <Pagination :current-page="currentPage" :total-pages="totalPages" @page-change="handlePageChange"/>
     </section>

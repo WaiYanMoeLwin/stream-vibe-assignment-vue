@@ -13,7 +13,7 @@
         </nav>
         <nav :class="{'active': isMenuOpen}">
             <ul>
-                <li><button aria-label="search"><img src="/images/icons/search.svg" alt="Search"></button></li>
+                <li><button aria-label="search" @click="handleSearch"><img src="/images/icons/search.svg" alt="Search"></button></li>
                 <li><button aria-label="notifications"><img src="/images/icons/noti-bell.svg" alt="Notifications"></button></li>
                 <li>
                     <NuxtLink to="/login" :class="['login', { 'hidden': isLoggedIn }]"><img src="/images/icons/login.svg" alt="Login"></NuxtLink>
@@ -26,6 +26,7 @@
                 </li>
             </ul>
         </nav>
+        <SearchScreen v-model:is-open="isSearchScreenOpen" />
         <button class="menu" aria-label="Menu" @click="toggleMenu">
             <img src="/images/icons/menu.svg" alt="Menu">
         </button>
@@ -62,5 +63,10 @@
             isProfileMenuOpen.value = true;
         }
     });
+
+    const isSearchScreenOpen = ref(false);
+    const handleSearch = () => {
+        isSearchScreenOpen.value = true;
+    };
 
 </script>

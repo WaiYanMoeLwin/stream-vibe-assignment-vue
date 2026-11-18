@@ -87,7 +87,7 @@
                 </li>
             </ul>
         </section>
-        <section class="music-section">
+        <section v-if="props.content.music" class="music-section">
             <header class="section-header">
                 <h2 class="section-title">
                     Music
